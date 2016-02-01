@@ -86,6 +86,8 @@ void printSquare(int square[], int n){
 	}	
 }
 
+// check square returns true if square is a magic square
+// check square also outputs to terminal sum of rows, columns, and diagonals
 bool checkSquare(int square[], int magicNumber, int n){
 
 	int sumCheck;
