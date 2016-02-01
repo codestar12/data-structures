@@ -87,7 +87,7 @@ void printSquare(int square[], int n){
 }
 
 // check square returns true if square is a magic square
-// check square also outputs to terminal sum of rows, columns, and diagonals
+// check square also outputs to terminal sum of rows, columns, and diag
 bool checkSquare(int square[], int magicNumber, int n){
 
 	int sumCheck;
@@ -104,7 +104,9 @@ bool checkSquare(int square[], int magicNumber, int n){
 	    	sumCheck += square[ (i * n) + j ]; 
 		}
 
-		cout << "Sum of numbers in Row    # " << (i + 1) << " = " << sumCheck << endl;
+		cout << "Sum of numbers in Row    # " << (i + 1) << " = " 
+		     << sumCheck << endl;
+		     
 		if(sumCheck != magicNumber)
 			isMagic = false;
 	}
@@ -120,7 +122,9 @@ bool checkSquare(int square[], int magicNumber, int n){
 	    	sumCheck += square[ (i * n) + j ]; 
 		}
 
-		cout << "Sum of numbers in Column # " << (j + 1) << " = " << sumCheck << endl;
+		cout << "Sum of numbers in Column # " << (j + 1) << " = " 
+		     << sumCheck << endl;
+
 		if(sumCheck != magicNumber)
 			isMagic = false;
 	}
