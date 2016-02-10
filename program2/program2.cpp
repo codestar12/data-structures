@@ -14,6 +14,7 @@ int 		oddCount(vector<int>&);
 int main(){
 
 	int n = 0;
+	int largest, smallest;
 
 	cout << "please enter an integer: ";
 	cin >> n;
@@ -21,6 +22,11 @@ int main(){
 	vector<int> hailstone = findHailstone(n);
 
 	printHailstone(hailstone);
+
+	largest = returnLargest(hailstone);
+	smallest = returnSmallest(hailstone);
+
+	cout << endl << largest << " " << smallest;
 
 	return 0;
 }
@@ -55,4 +61,28 @@ void printHailstone(vector<int> & hailstone){
 
 		cout << hailstone.at(i) << " ";
 	}
+}
+
+int returnLargest(vector<int> & hailstone){
+	int largest = 0;
+
+	for(int i = 0; i < hailstone.size(); i++ ){
+		if(largest < hailstone.at(i)){
+			largest = hailstone.at(i);
+		}
+	}
+
+	return largest;
+}
+
+int returnSmallest(vector<int> & hailstone){
+	int smallest = hailstone.at(0);
+
+	for(int i = 0; i < hailstone.size(); i++ ){
+		if(smallest > hailstone.at(i)){
+			smallest = hailstone.at(i);
+		}
+	}	
+
+	return smallest;
 }
