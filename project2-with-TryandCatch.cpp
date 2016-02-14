@@ -45,39 +45,68 @@ int main(){
 	char choice;
     do{
 
+        try{
+            cout << "Enter a  Positive integer Number  ";
+            cin >> n;
+            cout<< endl<<endl;
+            if(n <= 0){
+                    throw  "Error *** Number must be > 0\n\n";
+            }
+        
 
-        cout << "Enter a  Positive integer Number  ";
-        cin >> n;
-        cout<< endl<<endl;
+            vector<int> hailstone = hailstoneConstructor(n);
 
+            hailstonePrint(hailstone);
 
-	vector<int> hailstone = hailstoneConstructor(n);
+            largest = hailstoneLargest(hailstone);
+            smallest = hailstoneSmallest(hailstone);
+            length = hailstoneLength(hailstone);
 
-	hailstonePrint(hailstone);
+            cout << "The length of the sequence is "<< length;
+            cout << "The largest number in the sequence is  "
+                 << largest <<"."<<endl;
+            cout << "The smallest number in the sequence is  "
+                 << smallest <<"."<< endl;
 
-	largest = hailstoneLargest(hailstone);
-	smallest = hailstoneSmallest(hailstone);
-	length = hailstoneLength(hailstone);
-
-	cout << "The length of the sequence is "<< length;
-	cout << "The largest number in the sequence is  "<< largest <<"."<<endl;
-	cout << "The smallest number in the sequence is  "<< smallest <<"."<< endl;
-
-	hailstoneEvenPrint(hailstone);
-	hailstoneOddPrint(hailstone);
+            hailstoneEvenPrint(hailstone);
+            hailstoneOddPrint(hailstone);
 
 
 
+            do{
+                try{
 
+                   cout<<"Would you like to find hailstone" <<
+                   " sequence for another number - ";
+                   cout<<"Enter y or Y for yes"<<endl;
+                   cout<<" or n | N for no ";
+                   cin>>choice;
+                   cout<<endl;
 
-       cout<<"Would you like to find hailstone sequence for another number - ";
-       cout<<"Enter y or Y for yes"<<endl;
-       cout<<" or n | N for no ";
-       cin>>choice;
-       cout<<endl;
+                   if(choice != 'y' && choice != 'Y' && 
+                      choice != 'n' && choice != 'N'){
+
+                    throw "\nError *** invalid choice\n\n";
+
+                       }
+
+                   }
+                 catch(char const* message){
+
+                    cout << message;
+                  } 
+              }while(choice != 'y' && choice != 'Y' && 
+                     choice != 'n' && choice != 'N');      
+            
+        }    
+
+	catch(char const* message){
+        cout << message;
+    } 
+
 
     }
-    while(choice == 'y' || choice== 'Y');
+    while(choice != 'n' && choice != 'N');
 
 
 	cout<< "The hailstone Algorithm is implemented by Cody Blakeney And Christopher McCarty";
