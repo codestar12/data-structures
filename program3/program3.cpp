@@ -6,7 +6,8 @@ using namespace std;
 int main(){
 
 	//cashRegister cashbox;
-	Dispenser vend;
+	Dispenser vend(2,45);  // testing non-default constructor
+    //Dispenser vend;
 	int choice , firstDeposit;
 
 	// testing class declearation
@@ -24,52 +25,59 @@ int main(){
     cin >> choice;
 
 
-    if(choice != 1 || choice != 2 || choice != 3 || choice != 4 ||choice != 9)
+    if(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 9)
         cout << "Invalid Selection" << endl;
-    if (vend.itemCount(choice) == 0){
-        cout<<"Sorry, this item is sold out"<<endl<<endl;
-        choice =5;
-    }
+
+    
     if(choice == 1 || choice == 2 || choice == 3 || choice == 4){
-        cout<< "Please deposit " << vend.itemCost(choice) << "cents"<<endl;
-        cin >>firstDeposit;
-        cout <<endl;
-        }
-        if( firstDeposit> vend.itemCost(choice)){
-            cout<< "Collect your item at the bottom and enjoy."<<endl;
-            cout<< "Collect your change: "<< firstDeposit-vend.itemCost(choice)<<endl;
-            cout<<"*****************************************"<<endl<<endl;
-            vend.itemDispense(choice);
-        }
-        if(firstDeposit == vend.itemCost(choice)){
-           cout<< "Collect your item at the bottom and enjoy."<<endl;
-           cout<<"*****************************************"<<endl<<endl;
-           vend.itemDispense(choice);
-           }
-        if(firstDeposit < vend.itemCost(choice)){
-            int stillOwed , secondDeposit;
-            stillOwed = vend.itemCost(choice)-firstDeposit;
-            cout <<"Please deposit another " << stillOwed << "cents."<<endl;
-            cin >> secondDeposit;
 
-            if(secondDeposit == stillOwed){
+        if (vend.itemCount(choice) == 0){
+            cout<<"Sorry, this item is sold out"<<endl<<endl;
+           choice = -1; // choice set to obvious invalid choice
+        }
+        
+        else{
+
+            cout<< "Please deposit " << vend.itemCost(choice) << " cents"<<endl;
+            cin >>firstDeposit;
+            cout <<endl;
+            
+            if( firstDeposit> vend.itemCost(choice)){
                 cout<< "Collect your item at the bottom and enjoy."<<endl;
+                cout<< "Collect your change: "<< firstDeposit-vend.itemCost(choice)<<endl;
                 cout<<"*****************************************"<<endl<<endl;
                 vend.itemDispense(choice);
             }
-            if(secondDeposit < stillOwed){
-                cout<< "The amount is still not enough. Collect what you deposited."<<endl;
-                cout<<"*****************************************"<<endl<<endl;
-            }
-            if(secondDeposit > stillOwed){
-                cout<< "Collect your item at the bottom and enjoy."<<endl;
-                cout<< "Collect your change: "<< secondDeposit - stillOwed<<endl;
-                cout<<"*****************************************"<<endl<<endl;
-                vend.itemDispense(choice);
-            }
+            if(firstDeposit == vend.itemCost(choice)){
+               cout<< "Collect your item at the bottom and enjoy."<<endl;
+               cout<<"*****************************************"<<endl<<endl;
+               vend.itemDispense(choice);
+               }
+            if(firstDeposit < vend.itemCost(choice)){
+                int stillOwed , secondDeposit;
+                stillOwed = vend.itemCost(choice)-firstDeposit;
+                cout <<"Please deposit another " << stillOwed << "cents."<<endl;
+                cin >> secondDeposit;
 
+                if(secondDeposit == stillOwed){
+                    cout<< "Collect your item at the bottom and enjoy."<<endl;
+                    cout<<"*****************************************"<<endl<<endl;
+                    vend.itemDispense(choice);
+                }
+                if(secondDeposit < stillOwed){
+                    cout<< "The amount is still not enough. Collect what you deposited."<<endl;
+                    cout<<"*****************************************"<<endl<<endl;
+                }
+                if(secondDeposit > stillOwed){
+                    cout<< "Collect your item at the bottom and enjoy."<<endl;
+                    cout<< "Collect your change: "<< secondDeposit - stillOwed<<endl;
+                    cout<<"*****************************************"<<endl<<endl;
+                    vend.itemDispense(choice);
+                }
+            } // end if 
+          } // end else 
+        } // end correct choice if
 
-        }
 	}while(choice != 9);
 
     cout<<"Thank you for visiting Chris and Cody's vending Machine!"<<endl;
