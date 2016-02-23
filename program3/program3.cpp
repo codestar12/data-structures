@@ -25,8 +25,11 @@ int main(){
     cin >> choice;
 
 
-    if(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 9)
+    if(choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 9){
         cout << "Invalid Selection" << endl;
+        cin.clear(); // handles case of invalid type
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
 
     
     if(choice == 1 || choice == 2 || choice == 3 || choice == 4){
