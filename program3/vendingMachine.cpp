@@ -1,5 +1,5 @@
 #include <iostream>
-#include "vendingMachine.h" 
+#include "vendingMachine.h"
 
 using namespace std;
 
@@ -51,16 +51,16 @@ Dispenser::Dispenser(int inventory, int cost){
 to return */
 int Dispenser::itemCount(int itemSelection) const{
 
-	if(itemSelection == 0)
+	if(itemSelection == 1)
 		return candyCount;
 
-	else if(itemSelection == 1)
+	else if(itemSelection == 2)
 		return chipCount;
 
-	else if(itemSelection == 2)
+	else if(itemSelection == 3)
 		return gumCount;
 
-	else if(itemSelection == 3)
+	else if(itemSelection == 4)
 		return cookieCount;
 
 	// invalid selection
@@ -72,16 +72,16 @@ int Dispenser::itemCount(int itemSelection) const{
 to return */
 int Dispenser::itemCost(int itemSelection) const{
 
-	if(itemSelection == 0)
+	if(itemSelection == 1)
 		return candyCost;
 
-	else if(itemSelection == 1)
+	else if(itemSelection == 2)
 		return chipCost;
 
-	else if(itemSelection == 2)
+	else if(itemSelection == 3)
 		return gumCost;
 
-	else if(itemSelection == 3)
+	else if(itemSelection == 4)
 		return cookieCost;
 
 	// invalid selection
@@ -91,15 +91,15 @@ int Dispenser::itemCost(int itemSelection) const{
 
 void Dispenser::itemDispense(int itemSelection){
 
-	if(itemSelection == 0)
+	if(itemSelection == 1)
 		candyCount--;
 
-	else if(itemSelection == 1)
+	else if(itemSelection == 2)
 		chipCount--;
 
-	else if(itemSelection == 2)
+	else if(itemSelection == 3)
 		gumCount--;
 
-	else if(itemSelection == 3)
+	else if(itemSelection == 4)
 		cookieCount--;
 }
