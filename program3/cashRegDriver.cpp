@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <limits>
+#include <cctype>
 #include "cashReg.h" //correct header file
 
 using namespace std;
@@ -60,8 +61,17 @@ int main(){
         else{
                 //user enters the price of the candy
             cout<< "Please deposit " << vend.itemCost(choice) << " cents"<<endl;
-            cin >>firstDeposit;
-            cout <<endl;
+
+            // validates deposit input
+            while( !( cin >> firstDeposit) || firstDeposit < 0){
+
+                 cout << "Invalid Selection" << endl;
+                 cin.clear(); // handles case of invalid type
+                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                 cout <<"\nPlease deposit another " << vend.itemCost(choice) << " cents."<<endl;
+
+            } 
+
                 // if user enters more than price
             if( firstDeposit> vend.itemCost(choice)){
                 cout<< "Collect your item at the bottom and enjoy."<<endl;
@@ -81,7 +91,18 @@ int main(){
                 // first time.
                 stillOwed = vend.itemCost(choice)-firstDeposit;
                 cout <<"Please deposit another " << stillOwed << " cents."<<endl;
-                cin >> secondDeposit;
+                
+                // validates deposit input
+                 while( !( cin >> secondDeposit) || secondDeposit < 0){
+
+                 cout << "Invalid Selection" << endl;
+                 cin.clear(); // handles case of invalid type
+                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                 cout <<"\nPlease deposit another " << stillOwed << " cents."<<endl;
+
+                 }
+
+                
                     // if user enters the correct remaining amount
                 if(secondDeposit == stillOwed){
                     cout<< "Collect your item at the bottom and enjoy."<<endl;

@@ -1,6 +1,6 @@
 
-#ifndef VENDINGMACHINE_H
-#define VENDINGMACHINE_H
+#ifndef CASHREG_H
+#define CASHREG_H
 
 using namespace std;
 
