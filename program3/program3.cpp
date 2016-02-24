@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include "vendingMachine.h"
 
 using namespace std;
@@ -59,7 +60,7 @@ int main(){
             if(firstDeposit < vend.itemCost(choice)){
                 int stillOwed , secondDeposit;
                 stillOwed = vend.itemCost(choice)-firstDeposit;
-                cout <<"Please deposit another " << stillOwed << "cents."<<endl;
+                cout <<"Please deposit another " << stillOwed << " cents."<<endl;
                 cin >> secondDeposit;
 
                 if(secondDeposit == stillOwed){
