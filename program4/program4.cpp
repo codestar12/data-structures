@@ -35,6 +35,7 @@ class intList {
     	void removeDupl(); // removes duplicate numbers	
     	int getSize(){return size;}
     	void rotateList();
+    	void deleteList(); //right now deleteList() causes a seg fault when used after rotateList()
 };
 
 intList::intList(){
@@ -268,6 +269,38 @@ void intList::rotateList(){
 	shiftNode -> next = NULL;
 }
 
+//right now deleteList() causes a seg fault when used after rotateList()
+
+void intList::deleteList(){
+
+	ListNode  * leading_ptr  = 0,
+    		  * trailing_ptr = 0;
+
+    if(isEmpty()){
+    	cout << "List is empty \n";
+    }
+
+    else{
+
+    	leading_ptr = head;
+
+    	while(leading_ptr){ // until the end of the list is reached
+    		trailing_ptr = leading_ptr;
+    		leading_ptr = leading_ptr -> next;		
+    	}
+
+    	while(trailing_ptr != head){
+    		leading_ptr = trailing_ptr;
+    		trailing_ptr = trailing_ptr -> prev;
+    		free(leading_ptr);
+    	}
+
+    	free(head);
+
+    	head = NULL;
+    }
+}    
+
 int main(){
 
 	intList myList;
@@ -281,13 +314,15 @@ int main(){
 
 	myList.fillRand();
 	myList.displayList();
+    myList.rotateList();
+	myList.displayList();
 	cout << "size is " << myList.getSize() << endl;
-	//myList.removeNumber(3);
-	//myList.displayList();
 	myList.removeDupl();
 	cout << "size is " << myList.getSize() << endl;
 	myList.displayList();
-	myList.rotateList();
+	
+	//right now deleteList() causes a seg fault when used after rotateList()
+	//myList.deleteList();
 	myList.displayList();
 	
 
