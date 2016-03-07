@@ -47,9 +47,12 @@ class intList {
     	void removeDupl(); // removes duplicate numbers
     	int getSize(){return size;}
     	void rotateList();
+<<<<<<< HEAD
     	void deleteList(); //right now deleteList() causes a seg fault when used after rotateList()
     	void searchVal(int value);
     	void splitList();
+=======
+>>>>>>> parent of fd0186a... started work on deleteList. deleteList seems to work but for some reason causes a seg fault when used after rotate list.
 };
 
 intList::intList(){
@@ -315,6 +318,7 @@ void intList::rotateList(){
 	shiftNode -> next = NULL;
 }
 
+<<<<<<< HEAD
 //right now deleteList() causes a seg fault when used after rotateList()
 
 void intList::deleteList(){
@@ -360,6 +364,8 @@ void intList::deleteList(){
     }
 }
 
+=======
+>>>>>>> parent of fd0186a... started work on deleteList. deleteList seems to work but for some reason causes a seg fault when used after rotate list.
 int main(){
 
 	intList myList;
@@ -443,10 +449,27 @@ cout<<"Implemented by Christopher McCarty and Cody Blakeney."<<endl;
 	//cout << "size is " << myList.getSize() << endl;
 	//myList.displayList();
 
+<<<<<<< HEAD
 	//right now deleteList() causes a seg fault when used after rotateList()
 	//myList.deleteList();
 	//myList.displayList();
 
+=======
+	if(myList.isEmpty())
+		cout << "myList is empty now\n";
+
+	myList.fillRand();
+	myList.displayList();
+	cout << "size is " << myList.getSize() << endl;
+	//myList.removeNumber(3);
+	//myList.displayList();
+	myList.removeDupl();
+	cout << "size is " << myList.getSize() << endl;
+	myList.displayList();
+	myList.rotateList();
+	myList.displayList();
+	
+>>>>>>> parent of fd0186a... started work on deleteList. deleteList seems to work but for some reason causes a seg fault when used after rotate list.
 
 	return 0;
 }
