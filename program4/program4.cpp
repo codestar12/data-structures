@@ -147,7 +147,7 @@ void intList::fillRand(){
 
 	for (int i = 0; i < count; ++i)
 	{
-		appendNode(arrayRandNums[i],count);
+		appendNode(arrayRandNums[i]);
 	}
 }
 
@@ -270,35 +270,7 @@ void intList::rotateList(){
 }
 
 //right now deleteList() causes a seg fault when used after rotateList()
-void intList::searchVal(int value){
-    ListNode * leading_ptr = head;
-    
-    while((leading_ptr != 0 ) && value != leading_ptr ->value)
-    {
-        leading_ptr = leading_ptr -> next;
-    }
-    if(value == leading_ptr -> value)
-        return leading_ptr;
-    else
-        cout<<"Value not found"<<endl;
 
-}
-
-void intList::splitList(){
-     ListNode  * leading_ptr  = 0,
-    		  * trailing_ptr = 0;
-
-    if(isEmpty()){
-    	cout << "List is empty \n";
-    }
-
-    else{
-        
-    	leading_ptr = head;
-    	int tempValue = leading_ptr;
-    	while(leading_ptr < tempValue + 10 )
-
-}
 void intList::deleteList(){
 
 	ListNode  * leading_ptr  = 0,
