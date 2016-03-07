@@ -1,3 +1,15 @@
+//  Roster Numbers: 4 , 20
+//
+//  Authors: Cody Blakeney and Christopher McCarty
+//  Due Date: 3/7/2016
+//  Programming Assignment Number 4
+//
+//  Spring 2016 - CS 3358 - 253
+//
+//  Instructor: Husain Gholoom
+//
+//  This program is designed to let the user build and preform opperations on a
+//  linked list.
 
 #include <iostream>
 #include <cstddef>
@@ -25,17 +37,20 @@ class intList {
 
     	intList();
     	ListNode * makeNode(int); // returns pointer of newly created node
-    	void appendNode(int); // inserts a node at the end of list
+    	void appendNode(int, int); // inserts a node at the end of list
     	void displayList(); // prints out all values in list
     	void revDispList(); // displays list backwards
     	void fillRand(); // fills list with 20 sorted random #'s between 1-10
-    	bool isEmpty(); // returns true if empty false if not empty 
+    	bool isEmpty() const; // returns true if empty false if not empty 
     	void deleteNode(ListNode * &node);
     	void removeNumber(int value);
     	void removeDupl(); // removes duplicate numbers	
-    	int getSize(){return size;}
+    	int getSize() const{return size;}
     	void rotateList();
-    	void deleteList(); //right now deleteList() causes a seg fault when used after rotateList()
+    	void deleteList(); // fixed seg fault after rotate list
+        void printHead(){cout << "head is " << head << endl;}
+        void splitList();
+
 };
 
 intList::intList(){
@@ -54,7 +69,7 @@ ListNode *intList::makeNode(int value){
     return newNode;
 }
 
-void intList::appendNode(int value){
+void intList::appendNode(int value, int loc){
 
     ListNode *leading_ptr  = 0,
     		 *trailing_ptr = 0;
@@ -67,17 +82,31 @@ void intList::appendNode(int value){
 
     else{
 
+        int i = 0;
     	leading_ptr = head;
-    	while(leading_ptr){ // until the end of the list is reached
+        // until the end of the list is reached or the location to be 
+        // inserted is reached
+    	while(leading_ptr && i < loc){ 
     		leading_ptr -> prev = trailing_ptr;
     		trailing_ptr = leading_ptr;
     		leading_ptr = leading_ptr -> next;
+            i++;
     	}
 
     	// points the last element on the list to the new node
-    	trailing_ptr -> next = newNode; 
-    	newNode -> prev = trailing_ptr; 
-    	newNode -> next = NULL; 
+
+        if(leading_ptr == NULL){
+    	    trailing_ptr -> next = newNode; 
+    	    newNode -> prev = trailing_ptr; 
+    	    newNode -> next = NULL;
+        } 
+
+        else{
+            trailing_ptr -> next = newNode;
+            newNode -> prev = trailing_ptr;
+            newNode -> next = leading_ptr;
+            leading_ptr -> prev = newNode;
+        }
     } 
 
     size += 1;   		
@@ -97,10 +126,12 @@ void intList::displayList(){
     	leading_ptr = head;
 
     	while(leading_ptr){ // until the end of the list is reached
-    		cout << leading_ptr -> data << endl;
+    		cout << leading_ptr -> data << " ";
     		trailing_ptr = leading_ptr;
     		leading_ptr = leading_ptr -> next;		
     	}
+
+        cout << endl;
     }	
 }
 
@@ -133,25 +164,31 @@ void intList::revDispList(){
 }
 void intList::fillRand(){
 
-	int count = 20;
+    if(isEmpty()){
 
-	srand(time(NULL));
+	    int count = 20;
 
-	int arrayRandNums[count];
+	    srand(time(NULL));
 
-	for(int i = 0; i < count; i++){
-		arrayRandNums[i] = rand() % 10 + 1;
-	}
+	    int arrayRandNums[count];
 
-	sort(arrayRandNums, arrayRandNums + count);
+	    for(int i = 0; i < count; i++){
+		    arrayRandNums[i] = rand() % 10 + 1;
+	    }
 
-	for (int i = 0; i < count; ++i)
-	{
-		appendNode(arrayRandNums[i]);
-	}
+	    sort(arrayRandNums, arrayRandNums + count);
+
+	    for (int i = 0; i < count; ++i)
+	    {
+		    appendNode(arrayRandNums[i], i);
+	    }
+    }
+    else{
+        cout << "list already contains elements \n";
+    }
 }
 
-bool intList::isEmpty(){
+bool intList::isEmpty() const{
 	if(!head)
 		return true;
 	else
@@ -166,14 +203,18 @@ void intList::deleteNode(ListNode * &node){
 	// tells the node before the "to be
     // deleted" node where the next node is
 
+    if(node -> prev != head){
 	prev_ptr = node -> prev;  
 	prev_ptr -> next = node -> next; 
+    }
 
 	// tells the node after the to be
     // deleted node where the previous node is
 
+    if(node -> next){
 	next_ptr = node -> next;
 	next_ptr -> prev = prev_ptr;
+    }
 
 	size = size - 1;
 
@@ -182,7 +223,7 @@ void intList::deleteNode(ListNode * &node){
 
 void intList::removeNumber(int value){
 	ListNode  * leading_ptr  = 0,
-    		  * trailing_ptr = 0;
+    		  * dup = 0;
 
     bool found = false;		  
 
@@ -196,11 +237,18 @@ void intList::removeNumber(int value){
 
     	while(leading_ptr){ // until the end of the list is reached
     		//cout << leading_ptr -> data << endl;
-    		if(leading_ptr -> data == value){
+            if(head -> data == value){
+                leading_ptr = leading_ptr -> next;
+                delete head;
+                leading_ptr -> prev = NULL;
+                head = leading_ptr;
+            }
+    		else if(leading_ptr -> data == value){
     			deleteNode(leading_ptr);
     			found = true;
+                leading_ptr = leading_ptr -> next;
     		}
-    		trailing_ptr = leading_ptr;
+    		else
     		leading_ptr = leading_ptr -> next;		
     	}
 
@@ -228,11 +276,20 @@ void intList::removeDupl(){
        {
           /* sequence of steps is important here */
           dup = ptr2 -> next;
+          
           ptr2 -> next = ptr2 -> next -> next;
-          free(dup);
+          
+          /* if the next node isn't the end of the list
+             it sets the next node's previous pointer to
+             the deleted nodes previous pointer */
+
+          if(ptr2 -> next){ 
+          ptr2 -> next -> prev = dup -> prev;
+          }
+          delete dup;
           size = size - 1;
        }
-       else /* This is tricky */
+       else /* if the data isn't duplicate then move to the next node */
        {
           ptr2 = ptr2 -> next;
        }
@@ -262,14 +319,157 @@ void intList::rotateList(){
 
 	// makes the pointer at the end of the list
 	// the old head
-	current -> next = head; 
+	current -> next = head;
+
+    head -> prev = current; // makes the node before the old head the old end 
 
 	head = shiftNode -> next; // reassigns the head 
 
 	shiftNode -> next = NULL;
 }
 
-//right now deleteList() causes a seg fault when used after rotateList()
+void intList::splitList(){
+
+    if(size <= 10){
+        cout << "Unable to split list \n\n";
+    }
+
+    else{
+        ListNode * subHead1 = head,
+                 * subHead2 = 0,
+                 * leading_ptr = head;
+
+        displayList();
+
+        int i = 0;
+
+        while(leading_ptr && i < 9){
+            leading_ptr = leading_ptr -> next;
+            i++;
+        }
+        subHead2 = leading_ptr -> next; // assings list 2's head 
+        leading_ptr -> next = 0; // makes the end of list 1 point to null
+
+        cout << "1st split :";
+        displayList();
+
+        head = subHead2; // makes list 2's head the head for use with
+                         // displayList()
+
+        cout << "2nd split :";
+        displayList();
+
+        // creates a pointer to go through the list to build our union vector
+        ListNode * unionBuilder = subHead1; 
+
+        vector<int> unionSplit;
+
+        unionSplit.push_back(unionBuilder -> data);
+
+        while(unionBuilder -> next){
+
+            bool unique = true; // flag for finding unique values
+            
+
+            // searches all our previously found unique values to compare to
+            // the current nodes value
+            for(int i = 0; i < unionSplit.size(); i++){
+
+                    if(unionSplit[i] == unionBuilder -> data)
+                        unique = false;
+            }
+
+            // if the number is not found it is added to the union vector
+            if(unique)
+                unionSplit.push_back(unionBuilder -> data);
+
+            unionBuilder = unionBuilder -> next;
+        }
+
+        unionBuilder = subHead2;
+
+        // creates vectors to store the unique values of
+        // each list to later find the intersect
+        vector<int> intersect1 = unionSplit;
+        vector<int> intersect2;
+
+        intersect2.push_back(unionBuilder -> data);
+
+        // repeated again for list 2
+        while(unionBuilder -> next){
+
+            bool unique = true; // flag for finding unique values
+
+            // first finds if it is a unique value for this list
+            for(int i = 0; i < intersect2.size(); i++){
+
+                    if(intersect2[i] == unionBuilder -> data){
+                        unique = false;
+                    }
+            }
+
+            if(unique)
+                intersect2.push_back(unionBuilder -> data);
+
+            unique = true; // reset flag after building intersect
+            
+
+            // searches all our previously found unique values to compare to
+            // the current nodes value
+            for(int i = 0; i < unionSplit.size(); i++){
+                    if(unionSplit[i] == unionBuilder -> data){
+                        unique = false;
+                    }
+            }
+
+            // if the number is not found it is added to the union vector
+            if(unique)
+                unionSplit.push_back(unionBuilder -> data);
+                
+            unionBuilder = unionBuilder -> next;
+        }
+
+        cout << "Union of list 1 and 2 is : ";
+
+        for(int i = 0; i < unionSplit.size(); i++){
+            cout << unionSplit[i] << " ";
+        }
+
+        cout << endl;
+
+        vector<int> intersect;
+
+        // if the 
+        for(int i = 0; i < intersect1.size(); i++){
+            for(int j = 0; j < intersect2.size(); j++){
+                if(intersect1[i] == intersect2[j]){
+                    intersect.push_back(intersect1[i]);
+                }
+            }
+        }
+
+        if(intersect.size()){
+
+             cout << "intersect of list 1 and 2 is : ";
+
+             for(int i = 0; i < intersect.size(); i++){
+                 cout << intersect[i] << " ";
+             }
+        }
+
+        else{
+            cout << "There is no interesect between list 1 and 2 ";
+        }
+
+        cout << endl;
+
+        head = subHead1;
+        leading_ptr -> next = subHead2;
+
+
+
+    }
+}
 
 void intList::deleteList(){
 
@@ -293,9 +493,11 @@ void intList::deleteList(){
     		leading_ptr = trailing_ptr;
     		trailing_ptr = trailing_ptr -> prev;
     		free(leading_ptr);
+            size = size - 1;
     	}
 
     	free(head);
+        size = size - 1;
 
     	head = NULL;
     }
@@ -303,27 +505,93 @@ void intList::deleteList(){
 
 int main(){
 
-	intList myList;
-
 	
+    intList myList;
+    char choice;
+
+    
   
-	//testing random sorted array
+    //testing random sorted array
+    do{
 
-	if(myList.isEmpty())
-		cout << "myList is empty now\n";
+    cout<<"Hello.  Welcome to Chris and Cody's Linked list builder."<<endl;
+    cout<<"Please choose one of the following options."<<endl<<endl;
+    cout<<"A - build a sorted main list of 20 random integer numbers that are"<<endl;
+    cout<<"less than or equal to 10."<<endl;
+    cout<<"B - Insert a new number in the main list at a specific location."<<endl;
+    cout<<"C - Search the main list for a given item or number.  Display a "<<endl;
+    cout<<"message if it does not exist."<<endl;
+    cout<<"D - Remove an existing number from the list.  A message will be "<<endl;
+    cout<<"if it does not exist."<<endl;
+    cout<<"E - Display whether or not this main list is empty."<<endl;
+    cout<<"F - Rotates the list two positions."<<endl;
+    cout<<"G - Display the main list backwards."<<endl;
+    cout<<"H - splits the main list into two lists."<<endl;
+    cout<<"I - deletes duplicate numbers from the main list."<<endl;
+    cout<<"J - deletes the entire list."<<endl;
+    cout<<"X - exits the program."<<endl << endl;
+    cin>> choice;
+    int value=0;
 
-	myList.fillRand();
-	myList.displayList();
-    myList.rotateList();
-	myList.displayList();
-	cout << "size is " << myList.getSize() << endl;
-	myList.removeDupl();
-	cout << "size is " << myList.getSize() << endl;
-	myList.displayList();
-	
-	//right now deleteList() causes a seg fault when used after rotateList()
-	//myList.deleteList();
-	myList.displayList();
+    cout << endl;
+
+    if(choice == 'A' || choice == 'a'){ //builds and populates list
+        myList.fillRand();
+    }
+
+    else if(choice == 'B' || choice =='b'){ //Inserts a new number at a specific location
+        cout<<"At what position would you like to insert then number?"<<endl;
+        int position;
+        cin>> position;
+        cout<<endl<<"What number would you like it insert?"<<endl;
+        cin >> value;
+        myList.appendNode(value , position - 1);
+        cout << endl;
+       }
+     else if(choice == 'C' || choice == 'c'){  //Searches list for a number and displays it
+        cout<<"What value would you like to search for?"<<endl;
+        cin>>value;
+       // myList.searchVal(value);
+        }
+
+    else if(choice == 'D' || choice == 'd'){
+        cout<<"What value would you like to delete?"<<endl;
+        cin>>value;
+        myList.removeNumber(value);
+        }
+    else if(choice == 'E' || choice == 'e'){
+        if(myList.isEmpty()){
+            cout << "The List is empty\n";
+        }
+        else
+            cout << "The List is not empty\n";
+    }
+    else if(choice == 'F' || choice == 'f')
+        myList.rotateList();
+    else if(choice == 'G' || choice == 'g')
+        myList.revDispList();
+    else if(choice == 'H' || choice == 'h')
+        myList.splitList();
+    else if(choice == 'i' || choice == 'I')
+        myList.removeDupl();
+    else if(choice == 'J' || choice == 'j')
+        myList.deleteList();
+    else if(choice == 'X' || choice == 'x'){
+    }
+    else
+        cout<<"You have entered an invalid choice, please try again."<<endl;
+
+    myList.displayList();
+
+    myList.printHead();
+
+    cout << endl << myList.getSize() << endl;
+        }while(choice !='X' && choice !='x');
+
+
+cout<<"Thank you for using Chris and Cody's linked list builder!"<<endl<<endl;
+cout<<"Implemented by Christopher McCarty and Cody Blakeney."<<endl;
+    
 	
 
 	return 0;
