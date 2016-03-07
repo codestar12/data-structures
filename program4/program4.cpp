@@ -55,7 +55,7 @@ class intList {
 
 intList::intList(){ //sets both head a size to 0
 
-    head = NULL; 
+    head = NULL;
     size = 0;
 }
 
@@ -69,7 +69,7 @@ ListNode *intList::makeNode(int value){
     return newNode;
 }
 //this function inserts a number into a specific position (both num and pos are user input.)
-void intList::appendNode(int value, int loc){   
+void intList::appendNode(int value, int loc){
 
     ListNode *leading_ptr  = 0,
     		 *trailing_ptr = 0;
@@ -553,9 +553,9 @@ int main(){
 
 
 
-    
+
     do{ //loop repeats unless x is selected when prompted.
-    
+
     cout<<"Hello.  Welcome to Chris and Cody's Linked list builder."<<endl;
     cout<<"Please choose one of the following options."<<endl<<endl;
     cout<<"A - build a sorted main list of 20 random integer numbers that are"<<endl;
@@ -583,23 +583,59 @@ int main(){
 
     else if(choice == 'B' || choice =='b'){ //Inserts a new number at a specific location
         cout<<"At what position would you like to insert then number?"<<endl;
-        int position;       //the position the user would like to add the number
+        int position;
+        bool exInt=true;
+        bool exInt2=true;     //the position the user would like to add the number
         cin>> position;
+        while(cin.fail()){ //makes sure an integer was the input
+            exInt = false;
+            cin.clear();
+            cout<<"You did not enter an integer.  You will be returned to the menu after the"<<endl;
+            cout<<" next question."<<endl;
+            cin.ignore(256, '\n');
+        }
         cout<<endl<<"What number would you like it insert?"<<endl;
-        cin >> value;                   //the value the user wants to insert into the list
+        cin >> value;  // value user wants to insert into the list
+        while(cin.fail()){ //makes sure an integer was the input
+            exInt2 = false;
+            cin.clear();
+            cout<<"You did not enter an integer. You will be returned to the menu."<<endl;
+            cin.ignore(256, '\n');
+        }
+        if(exInt2 == true && exInt == true)
         myList.appendNode(value , position - 1);
         cout << endl;
        }
      else if(choice == 'C' || choice == 'c'){  //Searches list for a number and displays it
         cout<<"What value would you like to search for?"<<endl;
-        cin>>value;
-        myList.searchNum(value);    // calls function to search the list for a specific number
+        int x; //varible for the search input
+        cin>>x;
+        //cin>>value;
+        bool exInt=true;
+        while(cin.fail()){ //makes sure an integer was the input
+            exInt = false;
+            cin.clear();
+            cout<<"You did not enter an integer.  You will be returned to the main menu."<<endl;
+            cin.ignore(256, '\n');
+
+        }
+        if(exInt == true)
+            myList.searchNum(x);    // calls function to search the list for a specific number
         }
 
     else if(choice == 'D' || choice == 'd'){
         cout<<"What value would you like to delete?"<<endl;
         cin>>value;
-        myList.removeNumber(value);  // calls function to remove requested number
+        bool exInt=true;
+        while(cin.fail()){ //makes sure an integer was the input
+            exInt = false;
+            cin.clear();
+            cout<<"You did not enter an integer.  And will be returned to the main menu."<<endl;
+            cin.ignore(256, '\n');
+
+        }
+        if (exInt==true)
+            myList.removeNumber(value);  // calls function to remove requested number
         }
     else if(choice == 'E' || choice == 'e'){
         if(myList.isEmpty()){       // calls function to check if list is empty or not
@@ -611,7 +647,7 @@ int main(){
     else if(choice == 'F' || choice == 'f')
         myList.rotateList();    // calls function to rotate list 2 positions
     else if(choice == 'G' || choice == 'g')
-        myList.revDispList();   // calls function display list in reverse order, doesnt 
+        myList.revDispList();   // calls function display list in reverse order, doesnt
                                 // actually reverse the list.
     else if(choice == 'H' || choice == 'h')
         myList.splitList();     // calls function to split the list into two lists
