@@ -153,13 +153,15 @@ void intList::revDispList(){ //this function displays the list in reverse
     		leading_ptr = leading_ptr -> next;
     	}
 
+        cout << "List backwards : ";
+
     	while(trailing_ptr != head){
-    		cout << trailing_ptr -> data << endl;
+    		cout << trailing_ptr -> data << " ";
     		leading_ptr = trailing_ptr;
     		trailing_ptr = trailing_ptr -> prev;
     	}
 
-    	cout << trailing_ptr -> data;
+    	cout << trailing_ptr -> data << endl << endl;
     }
 }
 void intList::fillRand(){ //this function creates the linked list.
@@ -236,7 +238,7 @@ void intList::removeNumber(int value){ //this function removes a specific number
     	leading_ptr = head;
 
     	while(leading_ptr){ // until the end of the list is reached
-    		//cout << leading_ptr -> data << endl;
+    		
             if(head -> data == value){
                 leading_ptr = leading_ptr -> next;
                 delete head;
@@ -487,7 +489,7 @@ void intList::searchNum(int value){  //this function search for a number(user in
     	leading_ptr = head;
 
     	while(leading_ptr){ // until the end of the list is reached
-    		//cout << leading_ptr -> data << endl;
+    		
             if(head -> data == value){
                 leading_ptr = leading_ptr -> next;
                 found = true;
@@ -660,11 +662,13 @@ int main(){
     else
         cout<<"You have entered an invalid choice, please try again."<<endl;
 
-    myList.displayList();
+    if(!myList.isEmpty()){
+        cout << "Current List: ";
+        myList.displayList();
+    }    
 
-    myList.printHead();
+    cout <<  endl;
 
-    cout << endl << myList.getSize() << endl;
         }while(choice !='X' && choice !='x');
 
 
