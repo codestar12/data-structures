@@ -42,20 +42,20 @@ class intList {
     	void revDispList(); // displays list backwards
     	void fillRand(); // fills list with 20 sorted random #'s between 1-10
     	bool isEmpty() const; // returns true if empty false if not empty
-    	void deleteNode(ListNode * &node);
-    	void removeNumber(int value);
+    	void deleteNode(ListNode * &node); //deletes a specific node
+    	void removeNumber(int value); // removes a number requested by the user
     	void removeDupl(); // removes duplicate numbers
-    	int getSize() const{return size;}
-    	void rotateList();
+    	int getSize() const{return size;} //finds the size of the list
+    	void rotateList();  // rotates the list two positions to the right
     	void deleteList(); // fixed seg fault after rotate list
-        void printHead(){cout << "head is " << head << endl;}
-        void splitList();
-        void searchNum(int value);
+        void printHead(){cout << "head is " << head << endl;} //prints where head is pointing
+        void splitList(); // splits the list into two lists ( if large enough)
+        void searchNum(int value);  //searches for a specific number.
 };
 
-intList::intList(){
+intList::intList(){ //sets both head a size to 0
 
-    head = NULL;
+    head = NULL; 
     size = 0;
 }
 
@@ -68,8 +68,8 @@ ListNode *intList::makeNode(int value){
 
     return newNode;
 }
-
-void intList::appendNode(int value, int loc){
+//this function inserts a number into a specific position (both num and pos are user input.)
+void intList::appendNode(int value, int loc){   
 
     ListNode *leading_ptr  = 0,
     		 *trailing_ptr = 0;
@@ -112,7 +112,7 @@ void intList::appendNode(int value, int loc){
     size += 1;
 }
 
-void intList::displayList(){
+void intList::displayList(){ //this function displays the list.
 
     ListNode  * leading_ptr  = 0,
     		  * trailing_ptr = 0;
@@ -135,7 +135,7 @@ void intList::displayList(){
     }
 }
 
-void intList::revDispList(){
+void intList::revDispList(){ //this function displays the list in reverse
 
 	ListNode  * leading_ptr  = 0,
     		  * trailing_ptr = 0;
@@ -162,7 +162,7 @@ void intList::revDispList(){
     	cout << trailing_ptr -> data;
     }
 }
-void intList::fillRand(){
+void intList::fillRand(){ //this function creates the linked list.
 
     if(isEmpty()){
 
@@ -188,14 +188,14 @@ void intList::fillRand(){
     }
 }
 
-bool intList::isEmpty() const{
+bool intList::isEmpty() const{  //this function checks to see if list is empty.
 	if(!head)
 		return true;
 	else
 		return false;
 }
 
-void intList::deleteNode(ListNode * &node){
+void intList::deleteNode(ListNode * &node){ //this function deletes a specific node(used by other functions)
 
 	ListNode * prev_ptr = 0,
 			 * next_ptr = 0;
@@ -221,7 +221,7 @@ void intList::deleteNode(ListNode * &node){
 	delete node;
 }
 
-void intList::removeNumber(int value){
+void intList::removeNumber(int value){ //this function removes a specific number (user input)
 	ListNode  * leading_ptr  = 0,
     		  * dup = 0;
 
@@ -259,7 +259,7 @@ void intList::removeNumber(int value){
 }
 
 
-void intList::removeDupl(){
+void intList::removeDupl(){   //this function removes any duplicate numbers
 
 	ListNode *ptr1, *ptr2, *dup;
   ptr1 = head;
@@ -299,7 +299,7 @@ void intList::removeDupl(){
   }
 }
 
-void intList::rotateList(){
+void intList::rotateList(){ //this function rotates the list by two positions
 
 	ListNode * current = head;
 
@@ -329,7 +329,7 @@ void intList::rotateList(){
 	shiftNode -> next = NULL;
 }
 
-void intList::splitList(){
+void intList::splitList(){ //this function splits the list into two
 
     if(size <= 10){
         cout << "Unable to split list \n\n";
@@ -472,7 +472,7 @@ void intList::splitList(){
     }
 }
 
-void intList::searchNum(int value){
+void intList::searchNum(int value){  //this function search for a number(user input)
 	ListNode  * leading_ptr  = 0,
     		  * dup = 0;
 
@@ -513,7 +513,7 @@ void intList::searchNum(int value){
 }
 
 
-void intList::deleteList(){
+void intList::deleteList(){ //this function deletes the entire list.
 
 	ListNode  * leading_ptr  = 0,
     		  * trailing_ptr = 0;
@@ -549,13 +549,13 @@ int main(){
 
 
     intList myList;
-    char choice;
+    char choice; //should be a char that is listed on the menu
 
 
 
-    //testing random sorted array
-    do{
-
+    
+    do{ //loop repeats unless x is selected when prompted.
+    
     cout<<"Hello.  Welcome to Chris and Cody's Linked list builder."<<endl;
     cout<<"Please choose one of the following options."<<endl<<endl;
     cout<<"A - build a sorted main list of 20 random integer numbers that are"<<endl;
@@ -583,41 +583,42 @@ int main(){
 
     else if(choice == 'B' || choice =='b'){ //Inserts a new number at a specific location
         cout<<"At what position would you like to insert then number?"<<endl;
-        int position;
+        int position;       //the position the user would like to add the number
         cin>> position;
         cout<<endl<<"What number would you like it insert?"<<endl;
-        cin >> value;
+        cin >> value;                   //the value the user wants to insert into the list
         myList.appendNode(value , position - 1);
         cout << endl;
        }
      else if(choice == 'C' || choice == 'c'){  //Searches list for a number and displays it
         cout<<"What value would you like to search for?"<<endl;
         cin>>value;
-        myList.searchNum(value);
+        myList.searchNum(value);    // calls function to search the list for a specific number
         }
 
     else if(choice == 'D' || choice == 'd'){
         cout<<"What value would you like to delete?"<<endl;
         cin>>value;
-        myList.removeNumber(value);
+        myList.removeNumber(value);  // calls function to remove requested number
         }
     else if(choice == 'E' || choice == 'e'){
-        if(myList.isEmpty()){
+        if(myList.isEmpty()){       // calls function to check if list is empty or not
             cout << "The List is empty\n";
         }
         else
             cout << "The List is not empty\n";
     }
     else if(choice == 'F' || choice == 'f')
-        myList.rotateList();
+        myList.rotateList();    // calls function to rotate list 2 positions
     else if(choice == 'G' || choice == 'g')
-        myList.revDispList();
+        myList.revDispList();   // calls function display list in reverse order, doesnt 
+                                // actually reverse the list.
     else if(choice == 'H' || choice == 'h')
-        myList.splitList();
+        myList.splitList();     // calls function to split the list into two lists
     else if(choice == 'i' || choice == 'I')
-        myList.removeDupl();
+        myList.removeDupl();    // calls function to remove all duplicate numbers
     else if(choice == 'J' || choice == 'j')
-        myList.deleteList();
+        myList.deleteList();     // calls function to delete entire list
     else if(choice == 'X' || choice == 'x'){
     }
     else
