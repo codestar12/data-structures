@@ -101,12 +101,24 @@ int main(){
         bool same = true;
 
         if(choice == 1){
-            cout << "Enter Stack Values terminated by ;    ";
-            cin >> input1;
-            cout << "Enter Queue Values terminated by ;    ";
-            cin >> input2;
-            int value;
+            
+            do{
+                cout << "Enter Stack Values terminated by ;    ";
+                cin >> input1;
+                if(input1[input1.length()-1] != ';'){
+                    cout << "please terminate values with ;\n";
+                }
+            }while(input1[input1.length()-1] != ';');
 
+            do{
+                cout << "Enter Queue Values terminated by ;    ";
+                cin >> input2;
+                if(input2[input2.length()-1] != ';'){
+                    cout << "please terminate values with ;\n";
+                }
+            }while(input2[input2.length()-1] != ';');
+
+            int value;
             for(int i = 0; i < input1.length(); i++){
                 if(input1[i] != ';'){
                     value = int(input1[i]) - 48; // 48 is ascii value for 0
