@@ -592,7 +592,8 @@ int main(){
         while(cin.fail()){ //makes sure an integer was the input
             exInt = false;
             cin.clear();
-            cout<<"You did not enter an integer.  You will be returned to the menu after the"<<endl;
+            cout << "You did not enter an integer. "; 
+            cout << "You will be returned to the menu after the"<<endl;
             cout<<" next question."<<endl;
             cin.ignore(256, '\n');
         }
