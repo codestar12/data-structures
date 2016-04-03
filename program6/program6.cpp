@@ -8,23 +8,41 @@
 //
 //  Instructor: Husain Gholoom
 //
-//  
-//  
+//  The purpose of this program is to use recursions to write functions    
+//  that manipulate digits in integers 
 
 #include <iostream>
 
 using namespace std;
 
-bool increasingOrder(int);
-int reverseOrder(int, int reverse = 0);
+/*
+    Increasing Order returns true if digits are in 
+    increasing order from left to right. 
+*/                          
+bool increasingOrder(int); 
+/*
+    reverse order returns an integer in the reverse of its original digit
+    sequence.
+*/
+int reverseOrder(int, int reverse = 0); 
+/*
+    sumDigits returns the sum of the digits in the integer sequence.
+    its argument n is the integer to sum.
+*/
 int sumDigits(int);
+/*
+    sumSquares finds the sum of the square of all numbers from 1 to n
+*/
 int sumSquares(int);
+/*
+    disVert displays an integer by its digits vertically 
+*/
 void disVert(int);
 
 int main(){
 
     int choice;  // user var that chooses from the menu
-    int input;
+    int input;  // integer to be evaluated 
 
     
     cout << "\n*** Welcome to My Program Using Recursions  *** \n\n" ; 
@@ -42,7 +60,7 @@ int main(){
     cout << "    5- Displays the number vertically .\n\n";
      
 
-    do{  
+    do{  // program running loop
 
         cout << "\nSelect from the following menu\n";
         cout << "1.  Enter a positive integer >  9.\n";
@@ -51,7 +69,7 @@ int main(){
         
         cin >> choice;
         while(cin.fail()){ //makes sure an integer was the input
-        cin.clear();
+        cin.clear();       //and fixes cin if other type
         cout << "You did not enter an integer. " << endl ;
         cin.ignore(256, '\n');
         }
@@ -64,35 +82,38 @@ int main(){
                 cout << "Enter a positive integer >  9.    ";  
                 cin >> input;
                 while(cin.fail()){ //makes sure an integer was the input
-                        cin.clear();
+                        cin.clear(); // and fixes cin if other type
                         cout << "You did not enter an integer. " << endl ;
                         cin.ignore(256, '\n');
                 }
 
-                if(input <= 9){
+                if(input <= 9){ // validates user entry
                     cout << "Invalid Number - Number must be > 9\n\n"; 
-                } 
+                }
 
-                cout << "\n\nThe digits of " << input;
+                else{ 
 
-                if(increasingOrder(input))
-                    cout << " are in increasing order. \n\n";
-                else
-                    cout << " are not in increasing order.\n\n";
+                    cout << "\n\nThe digits of " << input;
 
-                cout << "The Original Digits are  " << input << " ---";
-                cout << "   Digits reversed = " << reverseOrder(input);
+                    if(increasingOrder(input))
+                        cout << " are in increasing order. \n\n";
+                    else
+                        cout << " are not in increasing order.\n\n";
 
-                cout << "\n\nSum of digits of the number  " << input <<
-                        "  is   =   " << sumDigits(input);
-                cout << "\n\nSum of squares from 0  to  "  << input <<
-                        "  =  " << sumSquares(input) << endl << endl;
+                    cout << "The Original Digits are  " << input << " ---";
+                    cout << "  Digits reversed = " << reverseOrder(input);
 
-                cout << input << " Displayed vertically\n";
-                disVert(input);               
+                    cout << "\n\nSum of digits of the number  " << input <<
+                            "  is   =   " << sumDigits(input);
+                    cout << "\n\nSum of squares from 0  to  "  << input <<
+                            "  =  " << sumSquares(input) << endl << endl;
+
+                    cout << input << " Displayed vertically\n";
+                    disVert(input); 
+                }                  
 
         }
-    }while(choice != 9);
+    }while(choice != 9); // choice of 9 ends program
 
     cout << "\n*** program is terminated ***\n";
     cout << "Thank you for using my program using recursions\n";
@@ -109,7 +130,6 @@ bool increasingOrder(int n){
 
     // starts by looking at the right most digit
     int lastDigit = n % 10; 
-
     n= n/10;
     
     // when zero the integer seq is complete and in increasing order
@@ -120,7 +140,7 @@ bool increasingOrder(int n){
     // if the next digit is smaller than the last digit continue to run
     // otherwise it will return false
     else if(n % 10 < lastDigit){
-
+    	
         if(increasingOrder(n)){
             return true;
         }
@@ -130,17 +150,19 @@ bool increasingOrder(int n){
 }
 
 /*
-    reverse order returns an integer in the reverse of its original
+    reverse order returns an integer in the reverse of its original digit
     sequence. its argument n is the integer to reverse and reverse is
     the currently reversed section to be passed into the function 
     recursively. 
 */
 int reverseOrder(int n, int reverse){
     
-    if(n <= 0)
+    if(n <= 0)             // once n <= 0 the process is complete
         return reverse;
     
-    reverse = reverse * 10 + n % 10;
+    reverse = reverse * 10 + n % 10; // multiplying by ten shifts the last
+                                     // last digit over one to all space for 
+                                     // a new digit to be added
     return reverseOrder(n/10, reverse);
 }
 /*
@@ -176,6 +198,9 @@ void disVert(int n){
 
     if(n > 0){
         disVert(n / 10);
-        cout << n % 10 << endl;
+        cout << n % 10 << endl; // this prints the right most digit
+                                // at the current level of the recursion
+                                // when the deepest level of recursion is 
+                                // reached this will be in the correct order
     }
 }

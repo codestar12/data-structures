@@ -34,6 +34,15 @@ def sumDigits(n):
     return mySum
 
 
+def sumSquares(n):
+
+    mySum = 0
+    if(n > 0):
+        mySum = n ** 2 + sumSquares(n - 1)
+
+    return mySum
+
+
 def distVert(n):
 
     if n > 0:
@@ -41,14 +50,16 @@ def distVert(n):
         print(n % 10)
 
 print("the numer seq is 4321")
-if increasingOrder(4321):
+if increasingOrder(1234):
     print("the number seq is in order")
 else:
     print("the number sequ is not in order")
 
 print("The reverseOrder order is ", end="")
-print(reverseOrder(4321))
+print(reverseOrder(1234))
 print("the sume of digits is ", end="")
-print(sumDigits(4321))
+print(sumDigits(1234))
+print("the sum of squares is ", end="")
+print(sumSquares(1234))
 print("displaied vertically")
-distVert(4321)
+distVert(1234)
