@@ -4,20 +4,20 @@
 
 using namespace std;
 
-long int sequentialSearch(int[]);
-long int binarySearch(int[]); 
+int sequentialSearch(int[], int);
+int binarySearchRec(int[], int, int, int , int &); 
 long int bubbleSort(int[]);
 long int selectionSort(int[]);
 long int insertionSort(int[]);
 long int quickSort(int[],int,int);
 
-const int ARRAY_SIZE = 10000;
+const int ARRAY_SIZE = 100000;
 
 int main(){
 
     
     srand (time(NULL));
-    long int comparisons;
+    long int count;
     time_t start, end;
 
     int array1[ARRAY_SIZE],
@@ -26,7 +26,7 @@ int main(){
         array4[ARRAY_SIZE];
 
     for(int i = 0; i < ARRAY_SIZE; i++){
-        array1[i] = rand() % 100;
+        array1[i] = rand() % 3000;
         array2[i] = array1[i];
         array3[i] = array1[i];
         array4[i] = array1[i];
@@ -41,56 +41,91 @@ int main(){
 
     cout << endl << endl;
 
-    /*
+    
     cout << "Sequential Search\n";
-    cout << "Searching for 99\n"; */
+    cout << "Searching for 1001\n"; 
+
+    start = time(NULL);
+    count = sequentialSearch(array1, 1001);
+    end = time(NULL);
+
+    cout << array1[count] << endl;
+
+    if(count >= 0)
+        cout << "99 Was Found.\n";
+    else if(count == -1)
+        cout << "99 Was Not Found.\n";
+
+    cout << "Start Time : "<< start << endl;
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << count << endl << endl; 
 
     cout << "Bubble Sort \n\n";
 
     
     start = time(NULL);
     cout << "Start Time : "<< start << endl;
-    comparisons = bubbleSort(array1);
+    count = bubbleSort(array1);
     end = time(NULL);
     cout << "End Time   : "<< end << endl;
     cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+    cout << "Number of Exchanges : " << count << endl << endl; 
 
     cout << "Selection Sort\n\n"; 
 
     //12345 Was Not found.
     start = time(NULL);
     cout << "Start Time : "<< start << endl;
-    comparisons = selectionSort(array2);
+    count = selectionSort(array2);
     end = time(NULL);
     cout << "End Time   : "<< end << endl;
     cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+    cout << "Number of Exchanges : " << count << endl << endl; 
 
     cout << "Insertion Sort\n\n"; 
 
     //12345 Was Not found.
     start = time(NULL);
     cout << "Start Time : "<< start << endl;
-    comparisons = insertionSort(array3);
+    count = insertionSort(array3);
     end = time(NULL);
     cout << "End Time   : "<< end << endl;
     cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+    cout << "Number of Exchanges : " << count << endl << endl; 
 
     cout << "Quick Sort\n\n"; 
 
     //12345 Was Not found.
     start = time(NULL);
     cout << "Start Time : "<< start << endl;
-    comparisons = quickSort(array4, 0, ARRAY_SIZE - 1);
+    count = quickSort(array4, 0, ARRAY_SIZE - 1);
     end = time(NULL);
     cout << "End Time   : "<< end << endl;
     cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+    cout << "Number of Exchanges : " << count << endl << endl; 
     
     cout << "Benchmark Algorithm Implemented by : Cody Blakeney\n";
     cout << "April 2016\n\n";
+
+    cout << "Binary Search\n";
+    cout << "Searching for 1001\n"; 
+
+    int comparisons = 0;
+    int index;
+    start = time(NULL);
+    index = binarySearchRec(array1, 0, ARRAY_SIZE - 1, 1001, comparisons);
+    end = time(NULL);
+
+    if(index >= 0)
+        cout << "99 Was Found.\n";
+    else if(index == -1)
+        cout << "99 Was Not Found.\n";
+
+    cout << "Start Time : "<< start << endl;
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << count << endl << endl; 
 
     return 0;
 }
@@ -193,9 +228,41 @@ long int quickSort(int array[], int left, int right){
     return exchanges;
 }
 
-long int sequentialSearch(int[]){
-    return 0;
+/*
+    sequential search searches through an array sequential
+    until the disired element is found. 
+    At the end of its search it returns the index of the disired element.
+    if the element is not found it returns -1. 
+*/
+int sequentialSearch(int array[], int value){
+    
+    int count = 0;
+
+    do{
+        if(array[count] == value){
+            return count;
+        }
+        count++;
+    }while(count < ARRAY_SIZE);
+
+    return -1;
 }
-long int binarySearch(int[]){
-    return 0;
+
+int binarySearchRec(int array[], int first, int last, int value ,  int &comparisons){
+    int middle;
+
+    if(first > last)
+        return -1;
+
+    comparisons++;  
+    middle = (first + last)/2;
+
+    if(array[middle] == value)
+        return middle;
+
+    if(array[middle] < value)
+        return binarySearchRec(array, middle + 1, last , value, comparisons);
+    else
+        return binarySearchRec(array, first, middle - 1, value, comparisons);
+    
 }
