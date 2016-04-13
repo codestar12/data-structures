@@ -1,37 +1,57 @@
-#include <iostream>
-#include <stdlib.h>
-#include <time.h>
+// Roster Number  : 4
+//
+// Author : Cody Blakeney
+// Due Date : April 13th, 2016
+// Programming Assignment Number 7
+//
+// Spring 2016 - CS 3358 - 253
+//
+// Instructor: Husain Gholoom.
+//
+// This program compares efficiencies of sorting and search algorithms
+
+#include <iostream> // for output
+#include <stdlib.h> // for randomizing numbers
+#include <time.h>   // for tracking run time
 
 using namespace std;
 
-int sequentialSearch(int[], int);
-int binarySearchRec(int[], int, int, int , int &); 
-long int bubbleSort(int[]);
-long int selectionSort(int[]);
-long int insertionSort(int[]);
-long int quickSort(int[],int,int);
+int sequentialSearch(int[], int, int, long int &); // searches through 
+                                             // array sequentially
 
-const int ARRAY_SIZE = 100000;
+int binarySearch(int[], int, int, long int &); // performs binary 
+                                              // search on array
+
+long int bubbleSort(int[], int); // uses bubble sort to sort array
+long int selectionSort(int[], int);  // uses selection sort to sort array
+long int insertionSort(int[], int); // uses insertion sort to sort array
+long int quickSort(int[],int,int); // uses quick sort to sort array
+void sortPrint(int[],int[],int[], int[], long int, int, time_t, time_t);
+                                // used to print information for 
+                                // sorting algorithms 
 
 int main(){
 
-    
-    srand (time(NULL));
-    long int count;
-    time_t start, end;
+    const int ARRAY_SIZE = 100000;
 
-    int array1[ARRAY_SIZE],
-        array2[ARRAY_SIZE],
+    srand (time(NULL)); // used for randomizing arrays
+    time_t start, end;  // used for time between starting functions
+                        // and ending 
+    long int comparisons = 0; // comparisons is used to 
+    int index = 0; // index is used to store the indices returned by 
+                   // searching functions.
+
+
+    int array1[ARRAY_SIZE], // four arrays used for the four 
+        array2[ARRAY_SIZE], // sorting algorithms 
         array3[ARRAY_SIZE],
         array4[ARRAY_SIZE];
 
-    for(int i = 0; i < ARRAY_SIZE; i++){
-        array1[i] = rand() % 3000;
-        array2[i] = array1[i];
+    for(int i = 0; i < ARRAY_SIZE; i++){    
+        array1[i] = rand() % 3000;  // loading all four arrays
+        array2[i] = array1[i];      // with same values
         array3[i] = array1[i];
         array4[i] = array1[i];
-
-        // cout << array1[i] << " ";
     }
 
     cout << endl;
@@ -43,97 +63,114 @@ int main(){
 
     
     cout << "Sequential Search\n";
-    cout << "Searching for 1001\n"; 
+    cout << "Searching for 3001\n\n"; 
 
     start = time(NULL);
-    count = sequentialSearch(array1, 1001);
+    index = sequentialSearch(array1, 3001, ARRAY_SIZE, comparisons);
     end = time(NULL);
 
-    cout << array1[count] << endl;
 
-    if(count >= 0)
-        cout << "99 Was Found.\n";
-    else if(count == -1)
-        cout << "99 Was Not Found.\n";
+    if(index >= 0)
+        cout << "3001 Was Found.\n";
+    else if(index == -1)
+        cout << "3001 Was Not Found.\n";
 
     cout << "Start Time : "<< start << endl;
     cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
+    cout << "Actual CPU Clock time : " << (end - start) << " s" << endl;
+    cout << "Number of Comparisons : " << comparisons << endl << endl; 
 
-    cout << "Bubble Sort \n\n";
-
-    
-    start = time(NULL);
-    cout << "Start Time : "<< start << endl;
-    count = bubbleSort(array1);
-    end = time(NULL);
-    cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
-
-    cout << "Selection Sort\n\n"; 
-
-    //12345 Was Not found.
-    start = time(NULL);
-    cout << "Start Time : "<< start << endl;
-    count = selectionSort(array2);
-    end = time(NULL);
-    cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
-
-    cout << "Insertion Sort\n\n"; 
-
-    //12345 Was Not found.
-    start = time(NULL);
-    cout << "Start Time : "<< start << endl;
-    count = insertionSort(array3);
-    end = time(NULL);
-    cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
-
-    cout << "Quick Sort\n\n"; 
-
-    //12345 Was Not found.
-    start = time(NULL);
-    cout << "Start Time : "<< start << endl;
-    count = quickSort(array4, 0, ARRAY_SIZE - 1);
-    end = time(NULL);
-    cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
-    
-    cout << "Benchmark Algorithm Implemented by : Cody Blakeney\n";
-    cout << "April 2016\n\n";
+    sortPrint(array1, array2, array3, array4, 
+              comparisons, ARRAY_SIZE, start, end);
 
     cout << "Binary Search\n";
-    cout << "Searching for 1001\n"; 
+    cout << "Searching for 3001\n\n"; 
 
-    int comparisons = 0;
-    int index;
+    comparisons = 0;
     start = time(NULL);
-    index = binarySearchRec(array1, 0, ARRAY_SIZE - 1, 1001, comparisons);
+    index = binarySearch(array1, ARRAY_SIZE, 3001, comparisons);
     end = time(NULL);
 
     if(index >= 0)
-        cout << "99 Was Found.\n";
+        cout << "3001 Was Found.\n";
     else if(index == -1)
-        cout << "99 Was Not Found.\n";
+        cout << "3001 Was Not Found.\n";
 
     cout << "Start Time : "<< start << endl;
     cout << "End Time   : "<< end << endl;
-    cout << "Actual CPU Clock time : " << (end - start) << endl;
-    cout << "Number of Exchanges : " << count << endl << endl; 
+    cout << "Actual CPU Clock time : " << (end - start) << " s" << endl;
+    cout << "Number of Comparisons : " << comparisons << endl << endl; 
+
+    cout << "Benchmark Algorithm Implemented by : Cody Blakeney\n";
+    cout << "April 2016\n\n";
 
     return 0;
 }
 
-long int bubbleSort(int array[]){
+/*
+    sortPrint outputs all the information about the sorting algorithms
+    it takes as inputs all the arrays, the array size, the time objects,
+    and a variable for comparisons
+*/
 
-    int swap;
-    long int exchanges = 0;
+void sortPrint(int array1[], int array2[], int array3[], 
+               int array4[] , long int comparisons, int ARRAY_SIZE,
+               time_t start, time_t end)
+{
+    cout << "Bubble Sort \n\n";
+
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = bubbleSort(array1, ARRAY_SIZE);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << " s" << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Selection Sort\n\n"; 
+
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = selectionSort(array2, ARRAY_SIZE);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << " s" <<  endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Insertion Sort\n\n"; 
+
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = insertionSort(array3, ARRAY_SIZE);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << " s" << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Quick Sort\n\n"; 
+
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = quickSort(array4, 0, ARRAY_SIZE - 1);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << " s" << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+}
+
+/*
+    bubbleSort sorts an array according to the bubble sort method.
+    once the sorting is completed it returns the number of exchanges 
+    needed to sort the array.
+*/
+
+long int bubbleSort(int array[], int ARRAY_SIZE){
+
+    int swap;                // swap is used to hold a value 
+                             // for swapping it between indices
+
+    long int exchanges = 0;  // this stores the value of exchanges
+                             // that occur during sorting.
 
     for (int i = 0 ; i < ( ARRAY_SIZE - 1 ); i++){
         for (int j = 0 ; j < ARRAY_SIZE - i - 1; j++){      
@@ -150,10 +187,20 @@ long int bubbleSort(int array[]){
     return exchanges;
 }
 
-long int selectionSort(int array[]){
+/*
+    selectionSort sorts an array according to the selection sort method.
+    once the sorting is completed it returns the number of exchanges 
+    needed to sort the array.
+*/
 
-    int min, temp;
-    long int exchanges = 0;
+long int selectionSort(int array[], int ARRAY_SIZE){
+
+    int min, temp; // min stores the value of the smallest number
+                   // temp is used to swap values between array
+                   // indices
+
+    long int exchanges = 0; // exchanges is used to count 
+                            // number of exchanges
 
     for(int i = 0; i < ARRAY_SIZE - 1; i++){
         min = i;
@@ -174,32 +221,54 @@ long int selectionSort(int array[]){
     return exchanges;
 }
 
-long int insertionSort(int array[]){
+/*
+    insertionSort sorts an array according to the insertion sort method.
+    once the sorting is completed it returns the number of exchanges 
+    needed to sort the array.
+*/
+
+long int insertionSort(int array[], int ARRAY_SIZE){
     
-    int temp, j;
-    long int exchanges = 0;
+    int temp, j;            // temp is used to swap values between 
+                            // array indices.
+                            // j is used for shifting values in array
+
+    long int exchanges = 0; // exchanges is used to count exchanges
+                            // while sorting
 
     for(int i = 1; i < ARRAY_SIZE; i++){
         temp = array[i];
         j = i - 1;
-        while(j >= 0 && array[j] > temp){
-            array[j + 1] = array[j];
+        while(j >= 0 && array[j] > temp){ // moves all values down 
+            array[j + 1] = array[j];      // in array until the correct
+                                          // location for temp is found
             j = j - 1;
+
+            exchanges++;
         }
-        array[j + 1] = temp;
-        exchanges++;
+        array[j + 1] = temp;        
     }
 
     return exchanges;
 }
 
+/*
+    quickSort sorts an array according to the quick sort method.
+    once the sorting is completed it returns the number of exchanges 
+    needed to sort the array.
+*/
+
 long int quickSort(int array[], int left, int right){
 
-    int i = left, j = right;
-    int temp;
-    int pivot = array[(left + right) / 2];
-    int exchanges = 0;
+    int i = left, j = right; // left is the first element in sub-array
+                             // right is last element in sub-array
 
+    int temp;    // temp is used to swap values between array
+
+    int pivot = array[(left + right) / 2]; // pivot is pivot value
+
+    int exchanges = 0;  // exchanges is used to count exchanges
+                        // while sorting
     while(i <= j){
 
         while(array[i] < pivot)
@@ -217,52 +286,60 @@ long int quickSort(int array[], int left, int right){
             exchanges++;
         }
     }
-    if(left < j){
-        exchanges += quickSort(array, left, j);
-    }
 
-    if(i < right){
+    if(left < j)
+        exchanges += quickSort(array, left, j);
+
+    if(i < right)
         exchanges += quickSort(array, i, right);
-    }
 
     return exchanges;
 }
 
 /*
     sequential search searches through an array sequential
-    until the disired element is found. 
-    At the end of its search it returns the index of the disired element.
-    if the element is not found it returns -1. 
+    until the desired element is found. 
+    At the end of its search it returns the index of the desired element.
+    if the element is not found it returns -1. comparisons is passed 
+    by reference so the number of comparisons can be counted.
 */
-int sequentialSearch(int array[], int value){
+int sequentialSearch(int array[], int value, int ARRAY_SIZE, 
+                     long int &comparisons)
+{
     
     int count = 0;
-
+    comparisons = 0;
     do{
         if(array[count] == value){
             return count;
         }
         count++;
+        comparisons++;
     }while(count < ARRAY_SIZE);
 
     return -1;
 }
 
-int binarySearchRec(int array[], int first, int last, int value ,  int &comparisons){
-    int middle;
+/*
+    binarySearch search searches through an array by dividing it
+    until the desired element is found. 
+    At the end of its search it returns the index of the desired element.
+    if the element is not found it returns -1. comparisons is passed 
+    by reference so the number of comparisons can be counted.
+*/
 
-    if(first > last)
-        return -1;
-
-    comparisons++;  
-    middle = (first + last)/2;
-
-    if(array[middle] == value)
-        return middle;
-
-    if(array[middle] < value)
-        return binarySearchRec(array, middle + 1, last , value, comparisons);
-    else
-        return binarySearchRec(array, first, middle - 1, value, comparisons);
+int binarySearch(int array[], int ARRAY_SIZE, int value ,  
+                 long int &comparisons)
+{    
+    int low = 0;
+    int high = ARRAY_SIZE - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (array[mid] == value) return mid;
+        else if (array[mid] < value) low = mid + 1;
+        else high = mid - 1;
+        comparisons++;
+   }
+   return -1;
     
 }
