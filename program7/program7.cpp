@@ -4,16 +4,21 @@
 
 using namespace std;
 
-int bubbleSort(int[]);
-int selectionSort(int[]);
-int insertionSort(int[]);
+long int sequentialSearch(int[]);
+long int binarySearch(int[]); 
+long int bubbleSort(int[]);
+long int selectionSort(int[]);
+long int insertionSort(int[]);
+long int quickSort(int[],int,int);
 
-const int ARRAY_SIZE = 100;
+const int ARRAY_SIZE = 10000;
 
 int main(){
 
     
     srand (time(NULL));
+    long int comparisons;
+    time_t start, end;
 
     int array1[ARRAY_SIZE],
         array2[ARRAY_SIZE],
@@ -29,30 +34,71 @@ int main(){
         // cout << array1[i] << " ";
     }
 
-    for(int i = 0; i < 20; i++)
-        cout << array1[i] << " ";
-    
-    cout << endl; 
-
-    cout << "sorts for bubbleSort " << bubbleSort(array1) << endl;
+    cout << endl;
 
     for(int i = 0; i < 20; i++)
         cout << array1[i] << " ";
 
-    cout << "\nsorts for selectionSort " << selectionSort(array2) << endl;  
-    
-    
+    cout << endl << endl;
 
-    for(int i = 0; i < 20; i++)
-        cout << array2[i] << " ";
+    /*
+    cout << "Sequential Search\n";
+    cout << "Searching for 99\n"; */
+
+    cout << "Bubble Sort \n\n";
+
+    
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = bubbleSort(array1);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Selection Sort\n\n"; 
+
+    //12345 Was Not found.
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = selectionSort(array2);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Insertion Sort\n\n"; 
+
+    //12345 Was Not found.
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = insertionSort(array3);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+
+    cout << "Quick Sort\n\n"; 
+
+    //12345 Was Not found.
+    start = time(NULL);
+    cout << "Start Time : "<< start << endl;
+    comparisons = quickSort(array4, 0, ARRAY_SIZE - 1);
+    end = time(NULL);
+    cout << "End Time   : "<< end << endl;
+    cout << "Actual CPU Clock time : " << (end - start) << endl;
+    cout << "Number of Exchanges : " << comparisons << endl << endl; 
+    
+    cout << "Benchmark Algorithm Implemented by : Cody Blakeney\n";
+    cout << "April 2016\n\n";
 
     return 0;
 }
 
-int bubbleSort(int array[]){
+long int bubbleSort(int array[]){
 
     int swap;
-    int exchanges = 0;
+    long int exchanges = 0;
 
     for (int i = 0 ; i < ( ARRAY_SIZE - 1 ); i++){
         for (int j = 0 ; j < ARRAY_SIZE - i - 1; j++){      
@@ -69,10 +115,10 @@ int bubbleSort(int array[]){
     return exchanges;
 }
 
-int selectionSort(int array[]){
+long int selectionSort(int array[]){
 
     int min, temp;
-     int exchanges = 0;
+    long int exchanges = 0;
 
     for(int i = 0; i < ARRAY_SIZE - 1; i++){
         min = i;
@@ -93,6 +139,63 @@ int selectionSort(int array[]){
     return exchanges;
 }
 
-int insertionSort(int array[]){
+long int insertionSort(int array[]){
+    
+    int temp, j;
+    long int exchanges = 0;
+
+    for(int i = 1; i < ARRAY_SIZE; i++){
+        temp = array[i];
+        j = i - 1;
+        while(j >= 0 && array[j] > temp){
+            array[j + 1] = array[j];
+            j = j - 1;
+        }
+        array[j + 1] = temp;
+        exchanges++;
+    }
+
+    return exchanges;
+}
+
+long int quickSort(int array[], int left, int right){
+
+    int i = left, j = right;
+    int temp;
+    int pivot = array[(left + right) / 2];
+    int exchanges = 0;
+
+    while(i <= j){
+
+        while(array[i] < pivot)
+            i++;
+
+        while(array[j] > pivot)
+            j--;
+
+        if(i <= j){
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+            i++;
+            j--;
+            exchanges++;
+        }
+    }
+    if(left < j){
+        exchanges += quickSort(array, left, j);
+    }
+
+    if(i < right){
+        exchanges += quickSort(array, i, right);
+    }
+
+    return exchanges;
+}
+
+long int sequentialSearch(int[]){
+    return 0;
+}
+long int binarySearch(int[]){
     return 0;
 }
